@@ -1,12 +1,21 @@
 <% include ../partials/header %>
 
 <div class="row">
-        
-         
-          <h1>Welcome to the comments page</h1>
+          <h1>Welcome to the Products page</h1>
             <br>
             
-        
+                    <label for="name">Name</label>
+                    <input name="fullname" type="text" value="<%= product.Name %>" />
+                     
+                    <label for="activity">Activity</label>
+                    <input name="activity" type="text" value="<%= product.Activity %>" />
+                   
+                    <label for="price">Price</label> 
+                    <input name="price" type="text" value="<%= product.Price %>" />
+                    
+                    <label for="image">Image</label> 
+                    <input name="image" type="text" value="<%= product.Image %>" />
+                    
           <div class="grid-container">
         <% result.forEach(function(product) { %>
                        

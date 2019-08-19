@@ -5,7 +5,7 @@ var express = require("express");
 var app = express(); 
 
 
-// Set the template engine (thanks Kevin!)
+// Set the template engine 
 app.set('view engine', 'ejs'); 
 
 app.use(express.static("views")); // Allow access to views folder
@@ -31,12 +31,13 @@ app.use(fileUpload());
 // First we need to tell the application where to find the database
 const db = mysql.createConnection({
 host: 'den1.mysql1.gear.host',
-    user: 'nci',
-    password: 'Yo7A_B09i4?1',
-    database: 'NCI'
+    user: 'wadb',
+    password: 'Cp6Bfh9-~I24',
+    database: 'wadb'
  });
+ 
+ 
 // Next we need to create a connection to the database
-
 db.connect((err) =>{
      if(err){
         console.log("go back and check the connection details. Something is wrong.")
@@ -46,156 +47,140 @@ db.connect((err) =>{
         
         console.log('Looking good the database connected')
     }
-    
-    
 })
 
 
 
-// this route will create a database table
 
-// app.get('/createtable', function(req,res){
-//     // Create a table that will show product Id, name, price, image and sporting activity
-//     let sql = 'CREATE TABLE liammc (Id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Name varchar(255), Price int, Image varchar(255), Activity varchar(255))';
-    
-//     let query = db.query(sql, (err,res) => {
-        
-//         if(err) throw err;
-        
-//         console.log(res);
-        
-//     });
-    
-//     res.send("You created your first DB Table")
-    
-// })
+// // this route will create a database table
+//   app.get('/createtable', function(req,res){
 
-
+// // Create a table that will show product Id, name, price, image and sporting activity
+//  let sql = 'CREATE TABLE ailbhe (Id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Name varchar(255), Price int, Image varchar(255), Activity varchar(255))';
+    
+//  let query = db.query(sql, (err,res) => {
+        
+//   if(err) throw err;
+        
+// console.log(res);
+        
+//   });
+    
+// res.send("You created your first DB Table")
+//  })
 
 
 // This route will create a product 
+app.get('/insert', function(req,res){
+   
+ // Create a table that will show product Id, name, price, image and sporting activity  polar m400 is a product name, url for the image notes on moodle on image upload-image uploader in node is really easy 199 is price and activity is running 
+    let sql = 'INSERT INTO ailbhe (Name, Price, Image, Activity) VALUES ("polar M400", 199, "polarm400.png", "Running") ';
+        let query = db.query(sql, (err,res) => {
+            if(err) throw err;
+        
+        console.log(res);
+        
+  });
+  res.send("You created your first Product")
 
+ })
 
-// app.get('/insert', function(req,res){
-//     // Create a table that will show product Id, name, price, image and sporting activity
-//     let sql = 'INSERT INTO liammc (Name, Price, Image, Activity) VALUES ("polar M400", 199, "polarm400.png", "Running") ';
-    
-//     let query = db.query(sql, (err,res) => {
-        
-//         if(err) throw err;
-        
-//         console.log(res);
-        
-//     });
-    
-//     res.send("You created your first Product")
-    
-// })
 
 
 
 // Url to get the products
-
 app.get('/products', function(req,res){
+  
     // Create a table that will show product Id, name, price, image and sporting activity
-    let sql = 'SELECT * FROM liammc';
+    let sql = 'SELECT * FROM ailbhe';
     
-    let query = db.query(sql, (err,result) => {
+   let query = db.query(sql, (err,result) => {
         
-        if(err) throw err;
+      if(err) throw err;
         
-        console.log(result);
+       console.log(result);
         
-        res.render('products', {result})
+   res.render('products', {result})
         
-    });
-    
-    //res.send("You created your first Product")
-    
+   });
+     // res.send("You created your first Product")
 })
+
+
 
 // URL to get the add product page
-app.get('/addproduct', function(req,res){
-    // Create a table that will show product Id, name, price, image and sporting activity
-  
-        res.render('addproduct')
-        
-  
+ //app.get('/addproduct', function(req,res){
     
-})
+    // Create a table that will show product Id, name, price, image and sporting activity
+  // res.render('addproduct')
+//})
+
+
 
 
 // post request to write info to the database
 app.post('/addproduct', function(req,res){
     
 let sampleFile = req.files.sampleFile;
-    filename = sampleFile.name;
+   filename = sampleFile.name;
     
    sampleFile.mv('./images/' + filename, function(err){
         
        if(err)
         
-       return res.status(500).send(err);
-       console.log("Image you are uploading is " + filename)
-       res.redirect('/');
+    return res.status(500).send(err);
+      console.log("Image you are uploading is " + filename)
+   //    res.redirect('/');
    })
     
     
     
     
     // Create a table that will show product Id, name, price, image and sporting activity
-    let sql = 'INSERT INTO liammc (Name, Price, Image, Activity) VALUES ("   '+req.body.name+'   ", '+req.body.price+', "'+filename+'", "'+req.body.activity+'") ';
+   let sql = 'INSERT INTO ailbhe (Name, Price, Image, Activity) VALUES ("   '+req.body.name+'   ", '+req.body.price+', "'+req.body.image+'", "'+req.body.activity+'") ';
     
-    let query = db.query(sql, (err,res) => {
-        
-        if(err) throw err;
-        
-        console.log(res);
-        
-    });
-    
-    res.redirect('/products')
-    //res.send("You created your first Product")
-    
+      let query = db.query(sql, (err,res) => {
+         if(err) throw err;
+           console.log(res);
+});
+   res.redirect('/products')
+
+//res.send("You created your first Product")
 })
 
 
-// URL to get the edit product page 
+
+
+ //URL to get the edit product page 
 app.get('/editproduct/:id', function(req,res){
-    
-        let sql = 'SELECT * FROM liammc WHERE Id =  "'+req.params.id+'" ';
-     
+     let sql = 'SELECT * FROM ailbhe WHERE Id =  "'+req.params.id+'" ';
         let query = db.query(sql, (err,result) => {
-        
-        if(err) throw err;
+           if(err) throw err;
         
         console.log(result);
-        
         res.render('editproduct', {result})
         
-    });
-    
-    
-    
-    
+   });
 })
+
+
+
 
 
 // URL to edit product
 app.post('/editproduct/:id', function(req,res){
     
 // Create a table that will show product Id, name, price, image and sporting activity
-    let sql = 'UPDATE liammc SET Name = "   '+req.body.name+'   ", Price = '+req.body.price+', Image = "'+req.body.image+'", Activity = "'+req.body.activity+'" WHERE Id =  "'+req.params.id+'" ';
-    
+  let sql = 'UPDATE ailbhe SET Name = "   '+req.body.name+'   ", Price = '+req.body.price+', Image = "'+req.body.image+'", Activity = "'+req.body.activity+'" WHERE Id =  "'+req.params.id+'" ';
     let query = db.query(sql, (err,res) => {
         
-        if(err) throw err;
+       if(err) throw err;
         
-        console.log(res);
+      console.log(res);
         
-    });
+   });
     
-    res.redirect('/products')
+   res.redirect('/products')
     //res.send("You created your first Product")
     
 })
@@ -203,16 +188,16 @@ app.post('/editproduct/:id', function(req,res){
 
 // Url to see individual product
 app.get('/product/:id', function(req,res){
-    // Create a table that will show product Id, name, price, image and sporting activity
-    let sql = 'SELECT * FROM liammc WHERE Id = "'+req.params.id+'" ';
+   // Create a table that will show product Id, name, price, image and sporting activity
+   let sql = 'SELECT * FROM ailbhe WHERE Id = "'+req.params.id+'" ';
     
     let query = db.query(sql, (err,result) => {
         
-        if(err) throw err;
+       if(err) throw err;
         
         console.log(res);
         res.render('products', {result})
-    });
+   });
     
    // res.redirect('/products')
     //res.send("You created your first Product")
@@ -221,11 +206,12 @@ app.get('/product/:id', function(req,res){
 
 
 
+
 // URL TO delete a product
 
 app.get('/delete/:id', function(req,res){
     
-        let sql = 'DELETE FROM liammc WHERE Id =  "'+req.params.id+'" ';
+   let sql = 'DELETE FROM ailbhe WHERE Id =  "'+req.params.id+'" ';
     
         let query = db.query(sql, (err,result) => {
         
@@ -235,12 +221,10 @@ app.get('/delete/:id', function(req,res){
   
     });
     
-    res.redirect('/products')
+  //  res.redirect('/products')
     
     
 })
-
-
 
 
 
@@ -288,7 +272,7 @@ app.post('/upload', function(req,res){
 // Search
 app.post('/search', function(req,res){
     
-        let sql = 'SELECT * FROM liammc WHERE Name LIKE  "%'+req.body.search+'%" ';
+        let sql = 'SELECT * FROM ailbhe WHERE Name LIKE  "%'+req.body.search+'%" ';
         let query = db.query(sql, (err,result) => {
         
         if(err) throw err;
