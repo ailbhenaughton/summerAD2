@@ -258,13 +258,9 @@ app.post('/upload', function(req,res){
         return res.status(500).send(err);
         console.log("Image you are uploading is " + filename)
         res.redirect('/');
-    })
+    });
     
-    
-    
-    
-    
-})
+});
 // End Image upload
 
 
@@ -277,14 +273,12 @@ app.post('/search', function(req,res){
         
         if(err) throw err;
         console.log(req.body.search);
-        res.render('products', {result})
+        res.render('products', {result});
         
     });
     
     
-    
-    
-})
+});
 // Search End
 
 
